@@ -1,0 +1,9 @@
+<!-- Library/templates/library/borrow_form.html -->
+{% extends 'library/base.html' %} {% block title %}Borrow Book{% endblock %} {%
+block content %}
+<h2>Borrow Book</h2>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Borrow</button>
+</form>
+{% endblock %}

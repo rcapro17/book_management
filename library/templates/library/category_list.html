@@ -1,0 +1,11 @@
+<!-- Library/templates/library/category_list.html -->
+{% extends 'library/base.html' %} {% block title %}Category List{% endblock %}
+{% block content %}
+<h2>Category List</h2>
+<a href="{% url 'category_create' %}">Add New Category</a>
+<ul>
+  {% for category in categories %}
+  <li>{{ category.category_name }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,9 @@
+<!-- Library/templates/library/reserve_form.html -->
+{% extends 'library/base.html' %} {% block title %}Reserve Book{% endblock %} {%
+block content %}
+<h2>Reserve Book</h2>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Reserve</button>
+</form>
+{% endblock %}
