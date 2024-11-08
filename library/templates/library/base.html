@@ -1,0 +1,36 @@
+<!-- templates/library/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'library/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li><a href="{% url 'book_list' %}">Books</a></li>
+          <li><a href="{% url 'author_list' %}">Authors</a></li>
+          <li><a href="{% url 'category_list' %}">Categories</a></li>
+          <li><a href="{% url 'publisher_list' %}">Publishers</a></li>
+          <li><a href="{% url 'login' %}">Login</a></li>
+          <li><a href="{% url 'register' %}">Register</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}
+      <!-- Page-specific content will be injected here -->
+      {% endblock %}
+    </main>
+
+    <footer>
+      <p>&copy; 2024 Library Management System</p>
+    </footer>
+  </body>
+</html>

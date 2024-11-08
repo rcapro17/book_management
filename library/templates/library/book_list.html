@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book List</title>
+  </head>
+  <body>
+    <h1>Books Available</h1>
+    <ul>
+      {% for book in books %}
+      <li>
+        <a href="{% url 'library:book_detail' pk=book.pk %}"
+          >{{ book.title }}</a
+        >
+        by {{ book.author.name }}
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
