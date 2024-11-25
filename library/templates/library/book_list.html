@@ -1,21 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book List</title>
+    <title>Book Management</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Books Available</h1>
-    <ul>
-      {% for book in books %}
-      <li>
-        <a href="{% url 'library:book_detail' pk=book.pk %}"
-          >{{ book.title }}</a
-        >
-        by {{ book.author.name }}
-      </li>
-      {% endfor %}
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="#">Library</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'library:book_list' %}">Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'library:author_list' %}"
+              >Authors</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'library:category_list' %}"
+              >Categories</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'library:publisher_list' %}"
+              >Publishers</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-principal">
+      {% if categories %} {% for category in categories %}
+      <div class="container-secundario">
+        <div class="titulo-categoria-livro">
+          <h3>{{ category.category_name }}</h3>
+        </div>
+        <div class="container-livros-interno">
+          {% for book in category.book_set.all %}
+          <div class="container-livro-single">
+            <a href="{% url 'library:book_detail' pk=book.pk %}">
+              {% if book.photo %}
+              <img src="{{ book.photo.url }}" alt="{{ book.title }}" />
+              {% else %}
+              <img
+                src="{% static 'default_book_image.jpg' %}"
+                alt="No Image Available"
+              />
+              {% endif %}
+            </a>
+            <p>{{ book.title }}</p>
+            <p>by {{ book.author.name }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <p>No categories found!</p>
+      {% endif %}
+    </div>
   </body>
 </html>

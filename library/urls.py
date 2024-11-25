@@ -1,4 +1,5 @@
-# library/urls.py
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from . import views
@@ -8,7 +9,7 @@ app_name = 'library'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('login/', views.login_view, name='login'),  # Changed from 'library/login/'
+    path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('books/', views.book_list, name='book_list'),
     path('borrow_book/<int:pk>', views.borrow_book, name='borrow_book'),
@@ -33,3 +34,7 @@ urlpatterns = [
     path('publishers/<int:pk>/delete/', views.publisher_delete, name='publisher_delete'),
     path('return_book/', views.return_book, name='return_book'),
 ]
+
+# Serve media files during development if DEBUG is True
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

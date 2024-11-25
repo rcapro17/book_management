@@ -13,9 +13,14 @@ from django.urls import reverse
 def index(request):
     return render(request, 'library/index.html')
 
+# def book_list(request):
+#     books = Book.objects.all()
+#     return render(request, 'library/book_list.html', {'books': books})
+
 def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'library/book_list.html', {'books': books})
+    categories = CategoryBook.objects.prefetch_related('book_set__author').all()
+    return render(request, 'library/book_list.html', {'categories': categories})
+
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
@@ -237,5 +242,3 @@ def publisher_delete(request, pk):
         publisher.delete()
         return redirect('publisher_list')
     return render(request, 'library/publisher_confirm_delete.html', {'publisher': publisher})
-
-
