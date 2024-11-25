@@ -10,6 +10,9 @@ from .forms import BookForm, AuthorForm, CategoryForm, PublisherForm, BorrowForm
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
+    # em andamento
+
+
 def index(request):
     return render(request, 'library/index.html')
 

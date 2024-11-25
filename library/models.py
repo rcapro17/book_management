@@ -88,3 +88,6 @@ class Reserve(models.Model):
 
     def __str__(self):
         return f"Reserve for {self.book} by {self.user}"
+    
+    # em andamento
+

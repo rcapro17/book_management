@@ -5,6 +5,8 @@ from . import views
 
 app_name = 'library'
 
+# em andamento
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
