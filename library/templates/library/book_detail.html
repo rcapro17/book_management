@@ -1,21 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ book.title }}</title>
-  </head>
-  <body>
-    {% comment %} em andamento {% endcomment %}
-    <h1>{{ book.title }}</h1>
-    <p>By: {{ book.author.name }}</p>
-    <p>Published by: {{ book.publisher.name }}</p>
-    <p>Category: {{ book.category.name }}</p>
-    <p>Description: {{ book.description }}</p>
-    <p>Available: {% if book.is_available %} Yes {% else %} No {% endif %}</p>
-    <a href="{% url 'library:borrow_book' pk=book.pk %}">Borrow Book</a>
-    <a href="{% url 'library:reserve_book' pk=book.pk %}">Reserve Book</a>
-    <a href="{% url 'library:book_update' pk=book.pk %}">Edit Book</a>
-    <a href="{% url 'library:book_delete' pk=book.pk %}">Delete Book</a>
-  </body>
-</html>
+{% extends "library/base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'book_detail.css' %}" />
+
+<div class="container book-container mt-5">
+  <div class="row">
+    <!-- Book Cover -->
+    <div class="col-md-4 text-center">
+      {% if book.photo_url %}
+      <img
+        src="{{ book.photo_url }}"
+        class="img-fluid rounded shadow-sm"
+        alt="{{ book.title }}" />
+      {% elif book.photo %}
+      <img
+        src="{{ book.photo.url }}"
+        class="img-fluid rounded shadow-sm"
+        alt="{{ book.title }}" />
+      {% else %}
+      <img
+        src="{% static 'images/default_cover.png' %}"
+        class="img-fluid rounded shadow-sm"
+        alt="No Cover" />
+      {% endif %}
+    </div>
+
+    <!-- Book Info -->
+    <div class="col-md-8">
+      <h2 class="mb-3">{{ book.title }}</h2>
+      <p><strong>Autor:</strong> {{ book.author }}</p>
+      <p><strong>Editora:</strong> {{ book.publisher }}</p>
+      <p><strong>Categoria:</strong> {{ book.category.category_name }}</p>
+      <p><strong>Descricao:</strong> {{ book.description }}</p>
+      <p>
+        <strong>Disponível:</strong>
+        {% if book.copies > 0 %}
+        <span class="text-success fw-bold">✅ Yes</span>
+        {% else %}
+        <span class="text-danger fw-bold">❌ No</span>
+        {% endif %}
+      </p>
+
+      <!-- Buttons -->
+      <div class="mt-4 d-flex flex-wrap gap-3">
+        <a
+          href="{% url 'library:borrow_book' pk=book.pk %}"
+          class="btn btn-success"
+          >Pegar Emprestado</a
+        >
+        <a
+          href="{% url 'library:reserve_book' pk=book.pk %}"
+          class="btn btn-primary"
+          >Reservar</a
+        >
+        {% comment %}
+        <a
+          href="{% url 'library:book_update' pk=book.pk %}"
+          class="btn btn-warning text-dark"
+          >Editar</a
+        >
+        <a
+          href="{% url 'library:book_delete' pk=book.pk %}"
+          class="btn btn-danger"
+          >Deletar</a
+        >
+        {% endcomment %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

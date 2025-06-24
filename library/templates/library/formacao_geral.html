@@ -1,0 +1,62 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'cursos.css' %}" />
+
+<section class="banner-curso">
+  <img
+    src="{% static 'images/formacao-banner.png' %}"
+    alt="Banner Formação Geral"
+    class="banner-background" />
+  <div class="overlay"></div>
+  <div class="container text-center banner-content">
+    <h1>Formação Geral Básica</h1>
+  </div>
+</section>
+
+<section class="descricao-curso">
+  <div class="container">
+    <h2>O que é a Formação?</h2>
+    <p>
+      A Formação Geral Básica oferece aos alunos conhecimentos fundamentais nas
+      áreas de linguagens, matemática, ciências humanas e da natureza.
+    </p>
+
+    <h2>Objetivo da Formação</h2>
+    <p>
+      Preparar os estudantes para os desafios acadêmicos e profissionais,
+      desenvolvendo competências essenciais para sua formação integral e
+      cidadania.
+    </p>
+
+    <h3 class="text-center mt-5">Depoimentos dos Alunos</h3>
+    <div class="depoimentos">
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-3.png' %}" alt="Aluno 3" />
+        <div class="card-body">
+          <p>
+            "A base que tive aqui me ajudou muito na minha trajetória
+            acadêmica."
+          </p>
+          <h5>- Beatriz Silva</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-1.png' %}" alt="Aluno 1" />
+        <div class="card-body">
+          <p>"A formação é completa e me ajudou a escolher minha carreira."</p>
+          <h5>- Rafael Pereira</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-2.png' %}" alt="Aluno 2" />
+        <div class="card-body">
+          <p>
+            "Aprendi muito sobre várias áreas, me preparando para o futuro."
+          </p>
+          <h5>- Camila Souza</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

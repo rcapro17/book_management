@@ -1,0 +1,135 @@
+/* Custom Styles for the ISBN Lookup Page */
+
+/* General Styling for the Page */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+footer {
+    margin-top: auto;
+    text-align: center;
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.main-container{
+    display: flex;
+    flex-direction: column;
+    background-color: #33372C;
+    align-items: center;
+    margin: 100px auto;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
+}
+.main-nav{
+    display: flex;
+    background-color: #33372C;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    font-weight: 600;
+}
+.main-nav a{
+    color: #F1EFEC;
+}
+ 
+
+
+h2, h3 {
+    color: #F1EFEC;
+}
+
+/* Styling the Form */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Input fields */
+input.form-control, textarea.form-control {
+    border-radius: 4px;
+    box-shadow: none;
+    border-color: #ccc;
+    transition: border-color 0.3s;
+}
+
+input.form-control:focus, textarea.form-control:focus {
+    border-color: #007bff;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Button Styling */
+button.btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1rem;
+    border-radius: 4px;
+}
+
+/* Book Info Section */
+#book-info {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0,0,0.1);
+    margin-top: 20px;
+}
+
+/* Book Cover Image */
+#book-cover {
+    max-width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Book Info Details */
+#book-info p {
+    font-size: 1.1rem;
+}
+
+#book-info strong {
+    color: #007bff;
+}
+
+/* Customizing the Alert Message */
+.alert {
+    margin-top: 15px;
+}
+
+/* Placeholder Styles */
+input[type="file"].form-control-file {
+    padding: 10px;
+}
+
+input[type="url"].form-control {
+    background-color: #f1f1f1;
+}
+
+
+/* Adjustments for Small Devices */
+@media (max-width: 768px) {
+    .form-group label {
+        font-size: 1rem;
+    }
+
+    .form-control {
+        font-size: 0.9rem;
+    }
+
+    button.btn {
+        font-size: 1rem;
+    }
+}

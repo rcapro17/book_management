@@ -1,0 +1,110 @@
+{% extends "library/base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'borrow_book_list.css' %}" />
+
+<body>
+  <div class="titulo">
+    <h1>Biblioteca Julio Ribeiro - Empréstimos</h1>
+  </div>
+
+  <div class="container mt-4">
+    {% if borrows %}
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Livro</th>
+            <th>Data de Empréstimo</th>
+            <th>Devolução</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for borrow in borrows %}
+          <tr>
+            <td>{{ borrow.user }}</td>
+            <td>{{ borrow.book.title }}</td>
+            <td>{{ borrow.borrow_date }}</td>
+            <td>{{ borrow.return_date|default:"-" }}</td>
+            <td>
+              {% if not borrow.return_date %}
+              <form method="POST" action="{% url 'library:return_book' borrow.pk %}" class="return-form">
+                {% csrf_token %}
+                <button type="submit" class="return-btn">Devolver</button>
+              </form>
+              {% else %}
+              <span class="badge">Devolvido</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination">
+      <span class="step-links">
+        {% if borrows.has_previous %}
+          <a href="?page=1">&laquo; Primeira</a>
+          <a href="?page={{ borrows.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+          Página {{ borrows.number }} de {{ borrows.paginator.num_pages }}
+        </span>
+
+        {% if borrows.has_next %}
+          <a href="?page={{ borrows.next_page_number }}">Próxima</a>
+          <a href="?page={{ borrows.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+
+    {% else %}
+    <p class="text-light">Nenhum empréstimo registrado.</p>
+    {% endif %}
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const forms = document.querySelectorAll(".return-form");
+      forms.forEach((form) => {
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          let button = form.querySelector(".return-btn");
+          button.disabled = true;
+          button.textContent = "Devolvendo...";
+
+          fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.reload();
+              } else {
+                button.disabled = false;
+                button.textContent = "Devolver";
+              }
+            })
+            .catch((error) => {
+              console.error("Fetch error:", error);
+              button.disabled = false;
+              button.textContent = "Devolver";
+            });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,42 @@
+.book-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+    max-width: 950px;
+    margin: 40px auto;
+}
+
+.book-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.book-container h2 {
+    color: #123458;
+    font-weight: 700;
+}
+
+.book-container p {
+    color: #333;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.book-container .btn {
+    min-width: 120px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+    .book-container {
+        padding: 20px;
+    }
+
+    .book-container h2 {
+        font-size: 24px;
+    }
+}

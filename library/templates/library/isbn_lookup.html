@@ -1,0 +1,270 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'isbn_lookup.css' %}" />
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet" />
+
+<div class="container py-4">
+  <!-- ISBN Search -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h4 class="card-title text-center mb-3">ISBN Lookup</h4>
+      <form id="isbn-form" class="d-flex justify-content-center gap-2">
+        {% csrf_token %}
+        <input
+          type="text"
+          id="isbn"
+          name="isbn"
+          class="form-control w-50"
+          placeholder="Enter ISBN"
+          required />
+        <button type="submit" class="btn btn-success">Search Book</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Book Details -->
+  <div id="book-detail-section" class="card mb-4 d-none">
+    <div class="card-body">
+      <h4 class="card-title mb-4">Book Details</h4>
+      <div class="row align-items-start">
+        <div class="col-md-3 text-center">
+          <img
+            id="book-cover"
+            src="{% static 'images/default_cover.png' %}"
+            alt="Book Cover"
+            class="img-thumbnail"
+            style="max-height: 220px" />
+        </div>
+        <div class="col-md-9">
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>Title</th>
+                <td id="book-title"></td>
+              </tr>
+              <tr>
+                <th>Author</th>
+                <td id="book-author"></td>
+              </tr>
+              <tr>
+                <th>ISBN</th>
+                <td id="book-isbn"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Registration Form -->
+  <div id="book-registration-section" class="card d-none">
+    <div class="card-body">
+      <h4 class="card-title mb-4">Complete Book Information</h4>
+      <form
+        id="book-registration-form"
+        method="post"
+        enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" id="isbn-field" name="isbn" />
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Title</label>
+            <input
+              type="text"
+              id="book-title-field"
+              name="title"
+              class="form-control"
+              required />
+
+            <label class="form-label mt-2">Author</label>
+            <input
+              type="text"
+              id="book-author-field"
+              name="author"
+              class="form-control" />
+
+            <label class="form-label mt-2">Copies</label>
+            <input
+              type="number"
+              id="book-copies-field"
+              name="copies"
+              value="1"
+              min="1"
+              class="form-control" />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Category</label>
+            <input
+              type="text"
+              id="book-category-field"
+              name="category"
+              class="form-control" />
+
+            <label class="form-label mt-2">Publisher</label>
+            <input
+              type="text"
+              id="book-publisher-field"
+              name="publisher"
+              class="form-control" />
+
+            <label class="form-label mt-2">Description</label>
+            <textarea
+              id="book-description-field"
+              name="description"
+              class="form-control"
+              rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Upload Book Cover</label>
+          <input
+            type="file"
+            id="book-cover-field"
+            name="cover"
+            class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Or Cover URL</label>
+          <input
+            type="url"
+            id="book-cover-url-field"
+            name="cover_url"
+            placeholder="https://example.com/cover.png"
+            class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Register Book
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const bookDetailSection = document.getElementById("book-detail-section");
+    const bookRegistrationSection = document.getElementById(
+      "book-registration-section"
+    );
+
+    document
+      .getElementById("isbn-form")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const isbn = document.getElementById("isbn").value.trim();
+        if (!isbn) {
+          alert("Please enter an ISBN.");
+          return;
+        }
+
+        fetch("{% url 'library:isbn_lookup' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+              .value,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isbn: isbn }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              alert(data.error);
+              return;
+            }
+
+            // Show sections
+            bookDetailSection.classList.remove("d-none");
+            bookRegistrationSection.classList.remove("d-none");
+
+            // Fill table
+            document.getElementById("book-title").textContent = data.title;
+            document.getElementById("book-author").textContent = data.author;
+            document.getElementById("book-isbn").textContent = data.isbn;
+
+            // Fill form
+            document.getElementById("isbn-field").value = data.isbn;
+            document.getElementById("book-title-field").value = data.title;
+            document.getElementById("book-author-field").value =
+              data.author || "";
+            document.getElementById("book-description-field").value =
+              data.description || "";
+            document.getElementById("book-category-field").value =
+              data.category || "";
+            document.getElementById("book-publisher-field").value =
+              data.publisher || "Unknown Publisher";
+
+            // Book cover
+            const bookCover = document.getElementById("book-cover");
+            bookCover.src =
+              data.cover || "{% static 'images/default_cover.png' %}";
+            bookCover.style.display = "block";
+
+            const coverUrl = document.getElementById("book-cover-url-field");
+            coverUrl.value = data.cover || "";
+          })
+          .catch((error) => {
+            alert("An error occurred while fetching book details.");
+            console.error("Fetch error:", error);
+          });
+      });
+
+    // 📘 Book Registration
+    document
+      .getElementById("book-registration-form")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        const coverFile = document.getElementById("book-cover-field").files[0];
+        const coverUrl = document
+          .getElementById("book-cover-url-field")
+          .value.trim();
+
+        if (coverFile) {
+          formData.append("cover", coverFile);
+        }
+        if (coverUrl) {
+          formData.append("cover_url", coverUrl);
+        }
+
+        fetch("{% url 'library:register_book' %}", {
+          method: "POST",
+          body: formData,
+          headers: {
+            "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+              .value,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              alert(data.error);
+            } else {
+              alert("Book registered successfully!");
+
+              document.getElementById("book-registration-form").reset();
+              document.getElementById("isbn-form").reset();
+              bookDetailSection.classList.add("d-none");
+              bookRegistrationSection.classList.add("d-none");
+            }
+          })
+          .catch((error) => {
+            alert("An error occurred while registering the book.");
+            console.error("Registration error:", error);
+          });
+      });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "admin/change_form.html" %} {% block content %}
+<div id="content-main">
+  <h1>Book Details</h1>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %} {{ form.as_p }}
+    <!-- Render the Django form fields -->
+
+    <!-- ISBN input -->
+    <label for="isbn-input">ISBN:</label>
+    <input
+      type="text"
+      id="isbn-input"
+      name="isbn"
+      value="{{ form.isbn.value }}"
+    />
+
+    <!-- Cover Image Preview -->
+    <div id="book-cover"></div>
+
+    <!-- Submit button to save the book -->
+    <button type="submit">Save</button>
+  </form>
+</div>
+
+<!-- JavaScript to handle barcode scanning and auto-fetching of book data -->
+<script src="{% static 'library/js/barcode_scan.js' %}"></script>
+{% endblock %}

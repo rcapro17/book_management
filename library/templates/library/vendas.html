@@ -1,0 +1,64 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'cursos.css' %}" />
+
+<section class="banner-curso">
+  <img
+    src="{% static 'images/vendas-banner.png' %}"
+    alt="Banner Vendas"
+    class="banner-background" />
+  <div class="overlay"></div>
+  <div class="container text-center banner-content"></div>
+</section>
+
+<section class="descricao-curso">
+  <div class="container">
+    <h2>O que é o curso?</h2>
+    <p>
+      O curso de Vendas prepara os alunos para atuarem no mercado comercial,
+      desenvolvendo habilidades de negociação, comunicação e atendimento ao
+      cliente.
+    </p>
+
+    <h2>Objetivo do Curso</h2>
+    <p>
+      Capacitar profissionais para atuar na área comercial, identificando as
+      necessidades dos clientes e propondo soluções adequadas com foco em
+      resultados.
+    </p>
+
+    <h3 class="text-center mt-5">Depoimentos dos Alunos</h3>
+    <div class="depoimentos">
+      <div class="card">
+        <img src="{% static 'images/luno-depo-3.png' %}" alt="Aluno 7" />
+        <div class="card-body">
+          <p>
+            "Agora entendo melhor como vender, negociar e me comunicar com os
+            clientes."
+          </p>
+          <h5>- Aline Costa</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/luno-depo-2.png' %}" alt="Aluno 8" />
+        <div class="card-body">
+          <p>
+            "O curso me deu muita confiança para trabalhar na área de vendas."
+          </p>
+          <h5>- Gabriel Souza</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/luno-depo-1.png' %}" alt="Aluno 9" />
+        <div class="card-body">
+          <p>
+            "Os professores são incríveis e trouxeram muita experiência
+            prática."
+          </p>
+          <h5>- Luan Martins</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

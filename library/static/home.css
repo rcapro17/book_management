@@ -1,0 +1,389 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h2 {  
+    color: #123458;
+    text-shadow: 2px 2px 4px rgba(244, 241, 241, 0.4);
+    font-family: 'Roboto', sans-serif;
+}
+
+#sub-title {  
+    color: white;
+    text-shadow: 2px 2px 4px rgba(10, 10, 10, 0.4);
+    font-family: 'Roboto', sans-serif;
+}
+
+footer {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+}
+
+/* 🔝 Header estilo IFSP */
+.ifsp-header {
+    background: linear-gradient(to bottom, #007e3d, #004d1a);
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+/* 🔼 Top Bar */
+.top-bar {
+    padding: 20px 0 10px 0;
+}
+
+.ifsp-brand h1 {
+    font-size: 22px;
+    margin: 0;
+    font-weight: 700;
+}
+
+.ifsp-brand h1 span {
+    display: block;
+    font-size: 32px;
+}
+
+.ifsp-brand p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* 🔍 Search */
+.search-and-social {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form {
+    display: flex;
+    gap: 4px;
+}
+
+.search-form input {
+    border-radius: 5px;
+    border: none;
+    padding: 6px 10px;
+    min-width: 180px;
+}
+
+.search-form button {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    color: #123458;
+    padding: 6px 10px;
+}
+
+.search-form button:hover {
+    background-color: #ccc;
+}
+
+/* 🔻 Menu Bar */
+.menu-bar {
+    background-color: #B7B7B7;
+    padding: 8px 0;
+}
+
+.menu-bar .nav-link {
+    color: #004d1a;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.menu-bar .nav-link:hover,
+.menu-bar .nav-link.active {
+    background-color: #004d1a;
+    color: #007e3d;
+}
+
+/* 🔥 Banner Fixo com imagem no HTML */
+.banner-fixo {
+    position: relative;
+    top: -70px;
+    color: white;
+    padding: 250px 30px;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* 🔥 Imagem de fundo ocupando toda a section */
+.banner-background {
+    position: absolute;
+    top: 0;
+    bottom: 100;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center -450px;
+    object-fit: cover;
+    z-index: 0;
+}
+
+/* 🔥 Overlay escuro transparente */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* 🔥 Conteúdo acima do overlay e imagem */
+.banner-content {
+    position: relative;
+    top: 150px;
+    z-index: 2;
+}
+
+.banner-fixo h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+.banner-fixo h2 {
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-top: 10px;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+.banner-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.banner-buttons .btn {
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+
+/* 🔥 Container do Carrossel */
+.avisos-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* 🔥 Faixa deslizante dos cards */
+.avisos-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+
+.avisos-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* 🔥 Estilo dos cards */
+.aviso-card {
+  flex: 0 0 280px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.aviso-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.aviso-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.aviso-info h5 {
+  color: #123458;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.aviso-info p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* 🔥 Botões de Scroll */
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(18, 52, 88, 0.8);
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+  z-index: 10;
+  transition: background-color 0.3s ease;
+}
+
+.scroll-button:hover {
+  background-color: rgba(18, 52, 88, 1);
+}
+
+.scroll-left {
+  left: 5px;
+}
+
+.scroll-right {
+  right: 5px;
+}
+
+
+
+
+
+/* ✅ WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    text-align: center;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    z-index: 9999;
+    transition: background-color 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    background-color: #1ebe57;
+}
+
+/* 🔥 Professores - Slider */
+.professores-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.professores-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+
+.professores-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.professor-card {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 15px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 15px;
+  min-width: 320px;
+  max-width: 400px;
+  align-items: center;
+}
+
+.professor-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.prof-info {
+  flex: 1;
+}
+
+.prof-info h5 {
+  margin: 0;
+  color: #123458;
+  font-family: 'Roboto', sans-serif; /* Applying Roboto to professor names */
+}
+
+.prof-info p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* 🔥 Scroll Buttons */
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(18, 52, 88, 0.8);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.scroll-button:hover {
+  background-color: rgba(18, 52, 88, 1);
+}
+
+.scroll-left {
+  left: 5px;
+}
+
+.scroll-right {
+  right: 5px;
+}
+
+
+
+/* 📱 Mobile adjustment */
+@media (max-width: 768px) {
+  .carousel-item {
+    height: 250px;
+  }
+  .banner-fixo h1 {
+        font-size: 1.8rem;
+    }
+
+    .banner-fixo h2 {
+        font-size: 1.2rem;
+    }
+
+    .banner-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .aviso-card {
+    flex: 0 0 220px;
+  }
+}

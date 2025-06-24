@@ -1,0 +1,141 @@
+/* General body styles */
+
+  
+  /* Title styles */
+  .titulo h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-top: 20px;
+   
+  }
+  .menu-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  /* Menu styles */
+  .menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+  }
+  
+  .menu .home {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu .home-button a,
+  .menu .listar-emprestimos a,
+  .menu .cadastro a,
+  .menu .entrar a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    margin-right: 20px;
+    background-color: #333;
+    transition: background-color 0.3s;
+  }
+  
+  .menu .home-button a:hover,
+  .menu .listar-emprestimos a:hover,
+  .menu .cadastro a:hover,
+  .menu .entrar a:hover {
+    background-color: #555;
+  }
+  
+  /* Table container */
+  .table-container {
+    margin-top: 40px;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #123458;
+    border-radius: 10px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: center;
+    color: white;
+    border: 1px solid #444;
+    background-color: #123458;
+  }
+  
+  .table th {
+    background-color: #555;
+  }
+  
+  .table tbody tr:nth-child(even) {
+    background-color: #444;
+  }
+  
+  /* Button styling */
+  .return-btn {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .return-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .return-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .badge {
+    background-color: #EFB036;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  .return-form{
+    margin-top: 1px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.pagination .step-links {
+  display: inline-block;
+}
+
+.pagination a {
+  color: white;
+  padding: 6px 12px;
+  text-decoration: none;
+  border: 1px solid white;
+  margin: 0 2px;
+  border-radius: 4px;
+  background-color: #007bff;
+}
+
+.pagination a:hover {
+  background-color: #0056b3;
+}
+
+.pagination .current {
+  color: #ffc107;
+  margin: 0 8px;
+  font-weight: bold;
+}

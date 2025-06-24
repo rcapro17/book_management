@@ -1,0 +1,65 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'cursos.css' %}" />
+
+<section class="banner-curso">
+  <img
+    src="{% static 'images/logistica-banner.png' %}"
+    alt="Banner Logística"
+    class="banner-background" />
+  <div class="overlay"></div>
+  <div class="container text-center banner-content">
+    {% comment %}
+    <h1>Curso de Logística</h1>
+    {% endcomment %}
+  </div>
+</section>
+
+<section class="descricao-curso">
+  <div class="container">
+    <h2>O que é o curso?</h2>
+    <p>
+      O curso de Logística ensina os alunos a gerir estoques, transporte e
+      distribuição de produtos, oferecendo uma visão prática e teórica do setor
+      logístico.
+    </p>
+
+    <h2>Objetivo do Curso</h2>
+    <p>
+      Formar profissionais capazes de planejar, executar e controlar operações
+      logísticas nas empresas, contribuindo para a eficiência e competitividade.
+    </p>
+
+    <h3 class="text-center mt-5">Depoimentos dos Alunos</h3>
+    <div class="depoimentos">
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-1.png' %}" alt="Aluno 4" />
+        <div class="card-body">
+          <p>
+            "Aprendi como funciona toda a cadeia logística, desde o fornecedor
+            até o cliente."
+          </p>
+          <h5>- Lucas Pereira</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-3.png' %}" alt="Aluno 5" />
+        <div class="card-body">
+          <p>
+            "O curso me preparou para trabalhar em grandes empresas de
+            logística."
+          </p>
+          <h5>- Fernanda Lima</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-2.png' %}" alt="Aluno 6" />
+        <div class="card-body">
+          <p>"Hoje trabalho na área graças ao aprendizado que tive aqui."</p>
+          <h5>- Pedro Santos</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

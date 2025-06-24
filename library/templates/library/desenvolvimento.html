@@ -1,0 +1,68 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'cursos.css' %}" />
+
+<section class="banner-curso">
+  <img
+    src="{% static 'images/desenvolvimento-banner.png' %}"
+    alt="Banner Desenvolvimento"
+    class="banner-background" />
+  <div class="overlay"></div>
+  <div class="container text-center banner-content">
+    {% comment %}
+    <h1>Curso de Desenvolvimento de Sistemas</h1>
+    {% endcomment %}
+  </div>
+</section>
+
+<section class="descricao-curso">
+  <div class="container">
+    <h2>O que é o curso?</h2>
+    <p>
+      O curso de Desenvolvimento de Sistemas capacita os alunos a criarem
+      softwares, aplicativos, sites e sistemas, preparando-os para o mercado
+      tecnológico.
+    </p>
+
+    <h2>Objetivo do Curso</h2>
+    <p>
+      Formar profissionais aptos a desenvolver, testar, implantar e manter
+      sistemas computacionais, tanto para web quanto para dispositivos móveis.
+    </p>
+
+    <h3 class="text-center mt-5">Depoimentos dos Alunos</h3>
+    <div class="depoimentos">
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-3.png' %}" alt="Aluno 1" />
+        <div class="card-body">
+          <p>
+            "Aprender programação aqui mudou minha vida e abriu portas para o
+            mercado."
+          </p>
+          <h5>- Maria Silva</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-1.png' %}" alt="Aluno 2" />
+        <div class="card-body">
+          <p>
+            "Os projetos práticos me ajudaram muito a entender como funciona a
+            tecnologia."
+          </p>
+          <h5>- João Souza</h5>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{% static 'images/aluno-depo-2.png' %}" alt="Aluno 3" />
+        <div class="card-body">
+          <p>
+            "Eu nunca imaginei que conseguiria criar meus próprios aplicativos."
+          </p>
+          <h5>- Renato Costa</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

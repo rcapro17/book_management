@@ -1,0 +1,59 @@
+{% extends "library/base.html" %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="{% static 'borrow_book.css' %}" />
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet" />
+
+<main class="main-container">
+  <h2>"{{ book.title }}"</h2>
+
+  <table class="table-borrow">
+    <thead>
+      <tr>
+        <th>Foto</th>
+        <th>Título</th>
+        <th>Devolução</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          {% if book.photo_url %}
+          <img
+            src="{{ book.photo_url }}"
+            alt="Book Cover"
+            style="max-width: 100px" />
+          {% elif book.photo %}
+          <img
+            src="{{ book.photo.url }}"
+            alt="Book Cover"
+            style="max-width: 100px" />
+          {% else %}
+          <div class="book-cover-container">
+            <h1 class="book-title-overlay">{{ book.title }}</h1>
+            <img
+              src="{% static 'images/default_cover.png' %}"
+              alt="No Cover Available"
+              style="max-width: 150px" />
+          </div>
+          {% endif %}
+        </td>
+        <td>{{ book.title }}</td>
+
+        <td>
+          {% if book.copies > 0 %}
+          <form method="post" class="borrow-form">
+            {% csrf_token %} {{ form.as_p }}
+            <button type="submit" class="btn">Borrow</button>
+          </form>
+          {% else %}
+          <p class="not-available">🚫 Livro indisponível no momento.</p>
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+{% endblock %}

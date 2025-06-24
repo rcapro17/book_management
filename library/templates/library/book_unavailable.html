@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Unavailable</title>
+  </head>
+  <body>
+    <h1>Sorry, this book is currently unavailable.</h1>
+    <p>{{ book.title }} has no available copies at the moment.</p>
+    <a href="{% url 'library:book_list' %}">Go back to the book list</a>
+  </body>
+</html>

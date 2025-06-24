@@ -1,22 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book List</title>
-  </head>
-  <body>
-    {% comment %} em andamento {% endcomment %}
-    <h1>Books Available</h1>
-    <ul>
-      {% for book in books %}
-      <li>
-        <a href="{% url 'library:book_detail' pk=book.pk %}"
-          >{{ book.title }}</a
-        >
-        by {{ book.author.name }}
-      </li>
-      {% endfor %}
-    </ul>
-  </body>
+{% extends "library/base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'book_list.css' %}" />
+
+<body>
+
+<!-- Título Central -->
+<div class="titulo">
+  <h1>Biblioteca Julio Ribeiro</h1>
+</div>
+
+<!-- Main Container -->
+<div class="container-principal">
+  {% if categories %}
+    {% for category, books in categories.items %}
+    <div class="container-livros-principal">
+      <div class="titulo-categoria">
+        <h4>{{ category }}</h4>
+      </div>
+
+      <div class="estante-container">
+        <button class="scroll-button scroll-left" onclick="scrollLeft('{{ category }}')">
+          &#9664;
+        </button>
+
+        <div class="estante-livros" id="estante-{{ category }}">
+          {% for book in books %}
+          <div class="livro">
+            <a href="{% url 'library:book_detail' pk=book.pk %}">
+              {% if book.photo_url %}
+                <img src="{{ book.photo_url }}" alt="Book Cover" />
+              {% elif book.photo %}
+                <img src="{{ book.photo.url }}" alt="Book Cover" />
+              {% else %}
+              <div class="book-cover-container">
+                <h1 class="book-title-overlay">{{ book.title }}</h1>
+                <img src="{% static 'images/default_cover.png' %}" 
+                  alt="No Cover Available" 
+                  class="book-cover" />
+              </div>
+              {% endif %}
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <button class="scroll-button scroll-right" onclick="scrollRight('{{ category }}')">
+          &#9654;
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-results">
+      <h4>No books found for "{{ query }}".</h4>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  function scrollLeft(category) {
+    const container = document.getElementById("estante-" + category);
+    const scrollAmount = container.clientWidth * 0.6;
+    container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  }
+
+  function scrollRight(category) {
+    const container = document.getElementById("estante-" + category);
+    const scrollAmount = container.clientWidth * 0.6;
+    container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  }
+</script>
+
+</body>
 </html>
+{% endblock %}
