@@ -107,24 +107,28 @@
     <section class="banner-fixo">
       <!-- 🔥 Imagem de fundo -->
       <img
-        src="{% static 'images/frente-escola.png' %}"
+        src="{% static 'images/carrossel2.jpg' %}"
         alt="Banner"
         class="banner-background" />
 
       <!-- 🔥 Overlay escuro -->
-      <div class="overlay"></div>
+      <div class="overlay-main"></div>
 
       <!-- 🔥 Conteúdo -->
       <div class="container text-center banner-content">
-        <h1>ENSINO TÉCNICO E MÉDIO GRATUITO</h1>
+        <h1>ENSINO TÉCNICO E MÉDIO INTEGRAL</h1>
         <h2 id="sub-title">COM QUALIDADE ESCOLA JÚLIO RIBEIRO</h2>
       </div>
     </section>
 
+    <div class="custom-divider">
+      <hr />
+    </div>
+
     <section id="conheca-grade" class="four-pillars-section py-5">
       <div class="container">
         <h2 class="text-center fw-bold text-uppercase mb-4 fw-bold">
-          CONHEÇA NOSSA GRADE
+          CONHEÇA NOSSA GRADE CURRICULAR
         </h2>
         <div class="row g-3">
           <div class="col-md-3">
@@ -231,7 +235,7 @@
                 data-bs-target="#calendar"
                 type="button"
                 role="tab">
-                CALENDARIO
+                CALENDÁRIO
               </button>
             </li>
             <li class="nav-item flex-fill text-center" role="presentation">
@@ -431,11 +435,11 @@
                 class="img-fluid" />
               <div class="overlay">
                 <div class="overlay-content">
-                  <h4>Academics</h4>
+                  <h4>Protagonismo Juvenil</h4>
                   <a href="#" class="btn btn-outline-light">Saiba mais</a>
                 </div>
               </div>
-              <div class="label-bottom">Academics</div>
+              <div class="label-bottom">Protagonismo Juvenil</div>
             </div>
           </div>
           <div class="col-md-3">
@@ -446,11 +450,11 @@
                 class="img-fluid" />
               <div class="overlay">
                 <div class="overlay-content">
-                  <h4>Esportes</h4>
+                  <h4>Projeto de Vida</h4>
                   <a href="#" class="btn btn-outline-light">Saiba mais</a>
                 </div>
               </div>
-              <div class="label-bottom">Esportes</div>
+              <div class="label-bottom">Projeto de Vida</div>
             </div>
           </div>
           <div class="col-md-3">
@@ -461,11 +465,11 @@
                 class="img-fluid" />
               <div class="overlay">
                 <div class="overlay-content">
-                  <h4>Atividades</h4>
+                  <h4>Tutoria</h4>
                   <a href="#" class="btn btn-outline-light">Saiba mais</a>
                 </div>
               </div>
-              <div class="label-bottom">Atividades Extracurriculares</div>
+              <div class="label-bottom">Tutoria</div>
             </div>
           </div>
           <div class="col-md-3">
@@ -476,11 +480,11 @@
                 class="img-fluid" />
               <div class="overlay">
                 <div class="overlay-content">
-                  <h4>Artes</h4>
+                  <h4>Eletivas</h4>
                   <a href="#" class="btn btn-outline-light">Saiba mais</a>
                 </div>
               </div>
-              <div class="label-bottom">Artes</div>
+              <div class="label-bottom">Eletivas</div>
             </div>
           </div>
         </div>
@@ -498,49 +502,59 @@
 
           <div class="professores-slider" id="professores-slider">
             <div class="professor-card">
-              <img src="{% static 'images/prof1.png' %}" alt="Prof. Ana" />
+              <img
+                src="{% static 'images/elaine-prof.png' %}"
+                alt="Prof. Ana" />
               <div class="prof-info">
-                <h5>Prof. Ana</h5>
-                <p><strong>Matemática</strong></p>
+                <h5>Elaine Souza</h5>
+                <p><strong>Física e Química</strong></p>
                 <p>
-                  Especialista em ensino de matemática, sempre tornando números
-                  fáceis e divertidos.
+                  Sou professora há 5 anos, formada em Química. Tenho 45 anos,
+                  experiência na área farmacêutica, e meu hobby é estudar
+                  perícia criminal.
                 </p>
               </div>
             </div>
 
             <div class="professor-card">
-              <img src="{% static 'images/prof2.png' %}" alt="Prof. Gustavo" />
+              <img
+                src="{% static 'images/josivan-prof.png' %}"
+                alt="Prof. Gustavo" />
               <div class="prof-info">
-                <h5>Prof. Carlos</h5>
-                <p><strong>História</strong></p>
+                <h5>Josivan Silva</h5>
+                <p><strong>Português</strong></p>
                 <p>
-                  Fascinado por contar histórias e ajudar os alunos a entenderem
-                  o passado.
+                  Sou professor há 2 anos, formado em Letras, tenho 22 anos e
+                  atualmente estou cursando Libras.
                 </p>
               </div>
             </div>
 
             <div class="professor-card">
-              <img src="{% static 'images/prof3.png' %}" alt="Prof. Eduardo" />
+              <img
+                src="{% static 'images/melissa-prof.png' %}"
+                alt="Prof. Eduardo" />
               <div class="prof-info">
-                <h5>Prof. Luciana</h5>
-                <p><strong>Ciências</strong></p>
+                <h5>Melissa Otsuka</h5>
+                <p><strong>Filosofia</strong></p>
                 <p>
-                  Amante da natureza e da ciência, conduz projetos incríveis de
-                  meio ambiente.
+                  Sou professora de Filosofia e Projeto de Vida. Acredito que
+                  ensinar é ajudar os alunos a refletirem sobre si mesmos e
+                  fazerem escolhas com consciência para o futuro.
                 </p>
               </div>
             </div>
 
             <div class="professor-card">
-              <img src="{% static 'images/prof4.jpg' %}" alt="Prof. João" />
+              <img
+                src="{% static 'images/rodrigo-prof.png' %}"
+                alt="Prof. João" />
               <div class="prof-info">
-                <h5>Prof. João</h5>
-                <p><strong>Inglês</strong></p>
+                <h5>Rodrigo Cunha</h5>
+                <p><strong>Desenvolvimento de Sistemas</strong></p>
                 <p>
-                  Paixão por idiomas e cultura, sempre trazendo atividades
-                  criativas em sala.
+                  Profissional com 20 anos de experiência em Tecnologia e
+                  docente 2 anos no ensino técno profissional.
                 </p>
               </div>
             </div>
@@ -561,9 +575,21 @@
           <div class="col-md-6">
             <h2>Sobre a Escola</h2>
             <p>
-              A Escola Estadual Júlio Ribeiro é referência em educação pública,
-              oferecendo ensino de qualidade, projetos educacionais inovadores e
-              uma equipe de profissionais comprometidos.
+              A Escola Estadual Júlio Ribeiro, localizada na região Centro-Sul
+              da cidade de São Paulo, tem uma trajetória marcada pelo
+              compromisso com a educação pública de qualidade.
+            </p>
+
+            <p>
+              Fundada há várias décadas, a escola recebeu o nome de Júlio
+              Ribeiro em homenagem ao escritor, jornalista e professor que se
+              destacou por defender ideias progressistas e pela valorização da
+              língua portuguesa. Desde sua criação, a escola tem sido um
+              importante espaço de aprendizado e convivência para crianças,
+              adolescentes e suas famílias da comunidade local. Ao longo dos
+              anos, a E.E. Júlio Ribeiro passou por mudanças em sua estrutura
+              física e pedagógica, sempre buscando se adaptar às necessidades
+              dos estudantes e às transformações da sociedade.
             </p>
           </div>
           <div class="col-md-6">
@@ -609,6 +635,10 @@
         </div>
       </div>
     </section>
+
+    <div class="custom-divider">
+      <hr />
+    </div>
 
     <footer class="bg-primary text-white py-3">
       <div class="container text-center">
