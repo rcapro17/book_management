@@ -125,3 +125,23 @@ class Reserve(models.Model):
         return f"Reserve for {self.book} by {self.user}"
 
     # em andamento
+
+
+class EventoCalendario(models.Model):
+    data = models.DateField()
+    titulo = models.CharField(max_length=120)
+
+    def __str__(self):
+        return f"{self.titulo} em {self.data}"
+
+    @property
+    def dia(self):
+        return self.data.day
+
+    @property
+    def dia_semana(self):
+        return self.data.strftime('%A').upper()[:3]  # e.g., MON
+
+    @property
+    def mes(self):
+        return self.data.strftime('%b').upper()  # e.g., JUL

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from .views import isbn_lookup_view, register_book_view
+from .views import isbn_lookup_view, register_book_view, whats_happening_view
 from . import views
 
 app_name = 'library'
@@ -18,6 +18,7 @@ urlpatterns = [
     path('logistica/', views.logistica, name='logistica'),
     path('vendas/', views.vendas, name='vendas'),
     path('formacao-geral/', views.formacao_geral, name='formacao_geral'),
+    path('whats-happening/', whats_happening_view, name='whats_happening'),
     # Changed from 'library/login/'
     path('login/', views.login_view, name='login'),
     path('register/', views.register_view, name='register'),

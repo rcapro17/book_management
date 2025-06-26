@@ -3,6 +3,13 @@
     padding: 0;
     box-sizing: border-box;
 }
+footer {
+    margin-top: auto;
+    text-align: center;
+    background-color: #FF7601;
+    color: white;
+    padding: 10px;
+}
 
 h2 {  
     color: #123458;
@@ -24,7 +31,7 @@ footer {
 
 /* 🔝 Header estilo IFSP */
 .ifsp-header {
-    background: linear-gradient(to bottom, #007e3d, #004d1a);
+    background: linear-gradient(to bottom, #FF7601, black);
     color: white;
     font-family: 'Open Sans', sans-serif;
 }
@@ -49,6 +56,34 @@ footer {
 .ifsp-brand p {
     margin: 0;
     font-size: 14px;
+}
+.school-logo {
+    display: inline-block;
+    padding: 5px;
+    border-radius: 8px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* .school-logo img {
+    height: 80px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+} */
+.school-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.school-title span {
+    font-size: 30px;
+    display: block;
+}
+
+.search-and-social {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 /* 🔍 Search */
@@ -84,12 +119,12 @@ footer {
 
 /* 🔻 Menu Bar */
 .menu-bar {
-    background-color: #B7B7B7;
+    background-color: #00809D;
     padding: 8px 0;
 }
 
 .menu-bar .nav-link {
-    color: #004d1a;
+    color: white;
     font-weight: 600;
     padding: 8px 16px;
     border-radius: 4px;
@@ -98,8 +133,8 @@ footer {
 
 .menu-bar .nav-link:hover,
 .menu-bar .nav-link.active {
-    background-color: #004d1a;
-    color: #007e3d;
+    background-color: #FF7601;
+    color: white;
 }
 
 /* 🔥 Banner Fixo com imagem no HTML */
@@ -363,6 +398,182 @@ footer {
 .scroll-right {
   right: 5px;
 }
+
+/* ---------- TABS ESTILO ---------- */
+#whats-happening .nav-tabs .nav-link {
+  background-color: #e1e1e1;
+  color: #990000;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  height: 100px;
+
+}
+
+#whats-happening .nav-tabs .nav-link.active {
+  background-color: #990000;
+  color: #ffffff;
+}
+
+#whats-happening .nav-item {
+  flex: 1 1 auto;
+  text-align: center;
+}
+/* ---------- CALENDAR CARD ESTILO ---------- */
+.calendar-card {
+  width: 200px;         /* largura proporcional */
+  height: 320px;        /* altura aumentada */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+
+
+.calendar-date {
+  background-color: #990000;
+  color: white;
+  padding: 20px 10px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.calendar-date .small {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.4rem;
+}
+.calendar-date .display-6 {
+  font-size: 3.2rem;
+}
+
+.calendar-date .display-6 {
+  font-size: 3.5rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.calendar-info {
+  background-color: #fff;
+  padding: 20px 10px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.calendar-info h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #990000;
+  margin-bottom: 0.5rem;
+}
+
+.calendar-line {
+  content: '';
+  width: 40px;
+  height: 3px;
+  background-color: #004080;
+  margin: 0 auto;
+}
+
+/* ---------- CARD DE AVISOS (NEWS) ---------- */
+.aviso-card.small-card {
+  width: 280px;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  border-radius: 6px;
+  margin: auto;
+}
+
+.aviso-card img {
+  max-height: 160px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* ---------- BOTÕES DO CARROSSEL ---------- */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  padding: 1.5rem;
+}
+
+.pillar-card {
+  position: relative;
+  overflow: hidden;
+  height: 350px;
+}
+
+.pillar-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.pillar-card:hover img {
+  transform: scale(1.05);
+}
+
+.label-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(153, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+.pillar-card:hover .overlay {
+  opacity: 1;
+}
+
+.pillar-card:hover .label-bottom {
+  opacity: 0;
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.overlay-content h4 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
 
 
 

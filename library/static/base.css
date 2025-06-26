@@ -11,7 +11,8 @@ body {
 footer {
     margin-top: auto;
     text-align: center;
-    background-color: #f8f9fa;
+    background-color: #FF7601;
+    color: white;
     padding: 10px;
 }
 
@@ -37,13 +38,13 @@ footer {
     font-weight: 600;
 }
 .main-nav a{
-    color: #F1EFEC;
+    color: #F0F0F0;
 }
  
 
 
 h2, h3 {
-    color: #F1EFEC;
+    color: #F0F0F0;
 }
 
 /* Styling the Form */

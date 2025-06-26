@@ -6,35 +6,46 @@
   rel="stylesheet" />
 
 <div class="container py-4">
-  <!-- ISBN Search -->
   <div class="card mb-4">
     <div class="card-body">
-      <h4 class="card-title text-center mb-3">ISBN Lookup</h4>
-      <form id="isbn-form" class="d-flex justify-content-center gap-2">
+      <h4 class="card-title text-center mb-3">Search Book by ISBN or Title</h4>
+      <form
+        id="isbn-form"
+        class="d-flex flex-wrap gap-2 justify-content-center">
         {% csrf_token %}
         <input
           type="text"
           id="isbn"
           name="isbn"
-          class="form-control w-50"
-          placeholder="Enter ISBN"
-          required />
+          class="form-control w-25"
+          placeholder="Search by ISBN" />
+        <span class="align-self-center">or</span>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          class="form-control w-25"
+          placeholder="Search by Title" />
         <button type="submit" class="btn btn-success">Search Book</button>
       </form>
+      <div class="text-center mt-3 d-none" id="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Book Details -->
   <div id="book-detail-section" class="card mb-4 d-none">
     <div class="card-body">
       <h4 class="card-title mb-4">Book Details</h4>
-      <div class="row align-items-start">
+      <div class="row">
         <div class="col-md-3 text-center">
           <img
             id="book-cover"
+            class="img-thumbnail"
             src="{% static 'images/default_cover.png' %}"
             alt="Book Cover"
-            class="img-thumbnail"
             style="max-height: 220px" />
         </div>
         <div class="col-md-9">
@@ -59,7 +70,6 @@
     </div>
   </div>
 
-  <!-- Book Registration Form -->
   <div id="book-registration-section" class="card d-none">
     <div class="card-body">
       <h4 class="card-title mb-4">Complete Book Information</h4>
@@ -69,7 +79,6 @@
         enctype="multipart/form-data">
         {% csrf_token %}
         <input type="hidden" id="isbn-field" name="isbn" />
-
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Title</label>
@@ -79,14 +88,12 @@
               name="title"
               class="form-control"
               required />
-
             <label class="form-label mt-2">Author</label>
             <input
               type="text"
               id="book-author-field"
               name="author"
               class="form-control" />
-
             <label class="form-label mt-2">Copies</label>
             <input
               type="number"
@@ -96,7 +103,6 @@
               min="1"
               class="form-control" />
           </div>
-
           <div class="col-md-6">
             <label class="form-label">Category</label>
             <input
@@ -104,14 +110,12 @@
               id="book-category-field"
               name="category"
               class="form-control" />
-
             <label class="form-label mt-2">Publisher</label>
             <input
               type="text"
               id="book-publisher-field"
               name="publisher"
               class="form-control" />
-
             <label class="form-label mt-2">Description</label>
             <textarea
               id="book-description-field"
@@ -120,7 +124,6 @@
               rows="4"></textarea>
           </div>
         </div>
-
         <div class="mb-3">
           <label class="form-label">Upload Book Cover</label>
           <input
@@ -129,17 +132,14 @@
             name="cover"
             class="form-control" />
         </div>
-
         <div class="mb-3">
           <label class="form-label">Or Cover URL</label>
           <input
-            type="url"
+            type="text"
             id="book-cover-url-field"
             name="cover_url"
-            placeholder="https://example.com/cover.png"
             class="form-control" />
         </div>
-
         <button type="submit" class="btn btn-primary w-100">
           Register Book
         </button>
@@ -148,7 +148,67 @@
   </div>
 </div>
 
+<!-- Book Selection Modal -->
+<div
+  class="modal fade"
+  id="bookSelectionModal"
+  tabindex="-1"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select a Book</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover" id="book-selection-table">
+          <thead>
+            <tr>
+              <th>Cover</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Message</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalBody">...</div>
+    </div>
+  </div>
+</div>
+
 <script>
+  function toggleSpinner(show) {
+    document
+      .getElementById("loading-spinner")
+      .classList.toggle("d-none", !show);
+  }
+
+  function showModal(title, message) {
+    document.getElementById("modalTitle").textContent = title;
+    document.getElementById("modalBody").textContent = message;
+    new bootstrap.Modal(document.getElementById("feedbackModal")).show();
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     const bookDetailSection = document.getElementById("book-detail-section");
     const bookRegistrationSection = document.getElementById(
@@ -161,11 +221,14 @@
         event.preventDefault();
 
         const isbn = document.getElementById("isbn").value.trim();
-        if (!isbn) {
-          alert("Please enter an ISBN.");
-          return;
-        }
+        const title = document.getElementById("title").value.trim();
+        if (!isbn && !title)
+          return showModal(
+            "Validation",
+            "Please enter either an ISBN or a book title."
+          );
 
+        toggleSpinner(true);
         fetch("{% url 'library:isbn_lookup' %}", {
           method: "POST",
           headers: {
@@ -173,70 +236,81 @@
               .value,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isbn: isbn }),
+          body: JSON.stringify({ isbn: isbn, title: title }),
         })
           .then((response) => response.json())
           .then((data) => {
-            if (data.error) {
-              alert(data.error);
-              return;
-            }
+            toggleSpinner(false);
+            if (data.error) return showModal("Lookup Error", data.error);
 
-            // Show sections
-            bookDetailSection.classList.remove("d-none");
-            bookRegistrationSection.classList.remove("d-none");
+            const books = data.multiple_books;
+            const tbody = document.querySelector("#book-selection-table tbody");
+            tbody.innerHTML = "";
+            books.forEach((book, index) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+              <td><img src="${book.cover}" style="height: 80px;"/></td>
+              <td>${book.title}</td>
+              <td>${book.author}</td>
+              <td><button class="btn btn-sm btn-primary" data-index="${index}">Select</button></td>
+            `;
+              tbody.appendChild(row);
+            });
 
-            // Fill table
-            document.getElementById("book-title").textContent = data.title;
-            document.getElementById("book-author").textContent = data.author;
-            document.getElementById("book-isbn").textContent = data.isbn;
+            new bootstrap.Modal(
+              document.getElementById("bookSelectionModal")
+            ).show();
+            tbody.querySelectorAll("button").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                const book = books[btn.dataset.index];
+                document.getElementById("book-title").textContent = book.title;
+                document.getElementById("book-author").textContent =
+                  book.author;
+                document.getElementById("book-isbn").textContent = book.isbn;
 
-            // Fill form
-            document.getElementById("isbn-field").value = data.isbn;
-            document.getElementById("book-title-field").value = data.title;
-            document.getElementById("book-author-field").value =
-              data.author || "";
-            document.getElementById("book-description-field").value =
-              data.description || "";
-            document.getElementById("book-category-field").value =
-              data.category || "";
-            document.getElementById("book-publisher-field").value =
-              data.publisher || "Unknown Publisher";
+                document.getElementById("isbn-field").value = book.isbn;
+                document.getElementById("book-title-field").value = book.title;
+                document.getElementById("book-author-field").value =
+                  book.author || "";
+                document.getElementById("book-description-field").value =
+                  book.description || "";
+                document.getElementById("book-category-field").value =
+                  book.category || "";
+                document.getElementById("book-publisher-field").value =
+                  book.publisher || "";
 
-            // Book cover
-            const bookCover = document.getElementById("book-cover");
-            bookCover.src =
-              data.cover || "{% static 'images/default_cover.png' %}";
-            bookCover.style.display = "block";
+                const cover = document.getElementById("book-cover");
+                cover.src =
+                  book.cover || "{% static 'images/default_cover.png' %}";
+                document.getElementById("book-cover-url-field").value =
+                  book.cover || "";
 
-            const coverUrl = document.getElementById("book-cover-url-field");
-            coverUrl.value = data.cover || "";
+                bookDetailSection.classList.remove("d-none");
+                bookRegistrationSection.classList.remove("d-none");
+                bootstrap.Modal.getInstance(
+                  document.getElementById("bookSelectionModal")
+                ).hide();
+              });
+            });
           })
           .catch((error) => {
-            alert("An error occurred while fetching book details.");
+            toggleSpinner(false);
+            showModal(
+              "Error",
+              "An error occurred while fetching book details."
+            );
             console.error("Fetch error:", error);
           });
       });
 
-    // 📘 Book Registration
     document
       .getElementById("book-registration-form")
       .addEventListener("submit", function (event) {
         event.preventDefault();
 
         const formData = new FormData(this);
-
         const coverFile = document.getElementById("book-cover-field").files[0];
-        const coverUrl = document
-          .getElementById("book-cover-url-field")
-          .value.trim();
-
-        if (coverFile) {
-          formData.append("cover", coverFile);
-        }
-        if (coverUrl) {
-          formData.append("cover_url", coverUrl);
-        }
+        if (coverFile) formData.append("cover", coverFile);
 
         fetch("{% url 'library:register_book' %}", {
           method: "POST",
@@ -246,13 +320,12 @@
               .value,
           },
         })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.error) {
-              alert(data.error);
+          .then(async (response) => {
+            const data = await response.json();
+            if (!response.ok) {
+              showModal("Registration Error", data.error || "Unknown error.");
             } else {
-              alert("Book registered successfully!");
-
+              showModal("Success", "Book registered successfully!");
               document.getElementById("book-registration-form").reset();
               document.getElementById("isbn-form").reset();
               bookDetailSection.classList.add("d-none");
@@ -260,11 +333,12 @@
             }
           })
           .catch((error) => {
-            alert("An error occurred while registering the book.");
-            console.error("Registration error:", error);
+            showModal("Error", "An unexpected error occurred.");
+            console.error("Registration fetch error:", error);
           });
       });
   });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 {% endblock %}

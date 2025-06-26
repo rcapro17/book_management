@@ -30,35 +30,37 @@
   <body>
     <header class="ifsp-header">
       <!-- 🔼 Top Bar -->
-      <div class="top-bar">
-        <div
-          class="container d-flex justify-content-between align-items-center">
-          <div class="ifsp-brand">
-            <h1>
-              SECRETARIA ESTADUAL DE EDUCAÇÃO DE SÃO PAULO<br />
-              <span>Escola Estadual Júlio Ribeiro</span>
-            </h1>
-            <p>SEDUC</p>
-          </div>
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- LOGO -->
+        <div class="school-logo me-3">
+          <img src="{% static 'images/jr-logo.png' %}" alt="Logo" height="80" />
+        </div>
 
-          <div class="search-and-social">
-            <form class="search-form" role="search" method="get">
-              <input
-                class="form-control"
-                type="search"
-                name="q"
-                placeholder="Buscar"
-                aria-label="Search" />
-              <button class="btn btn-light" type="submit">
-                <i class="bi bi-search"></i>
-              </button>
-              {% if query %}
-              <a href="{% url 'library:book_list' %}" class="btn btn-secondary"
-                >✖</a
-              >
-              {% endif %}
-            </form>
-          </div>
+        <!-- TÍTULO CENTRALIZADO -->
+        <div class="flex-grow-1 text-center">
+          <h1 class="school-title mb-0">
+            SECRETARIA ESTADUAL DE EDUCAÇÃO DE SÃO PAULO<br />
+            <span>Escola Estadual Júlio Ribeiro</span>
+          </h1>
+        </div>
+
+        <!-- BUSCA À DIREITA -->
+        <div class="search-and-social">
+          <form class="search-form" role="search" method="get">
+            <input
+              class="form-control"
+              type="search"
+              name="q"
+              placeholder="Buscar" />
+            <button class="btn btn-light" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+            {% if query %}
+            <a href="{% url 'library:book_list' %}" class="btn btn-secondary"
+              >✖</a
+            >
+            {% endif %}
+          </form>
         </div>
       </div>
 

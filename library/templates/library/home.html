@@ -25,30 +25,37 @@
   <body>
     <!-- 🔝 Navbar estilo IFSP -->
     <header class="ifsp-header">
-      <div class="top-bar">
-        <div
-          class="container d-flex justify-content-between align-items-center">
-          <div class="ifsp-brand">
-            <h1>
-              SECRETARIA ESTADUAL DE EDUCAÇÃO DE SÃO PAULO<br /><span
-                >Escola Estadual Júlio Ribeiro</span
-              >
-            </h1>
-            <p>SEDUC</p>
-          </div>
+      <div class="container d-flex justify-content-between align-items-center">
+        <!-- LOGO -->
+        <div class="school-logo me-3">
+          <img src="{% static 'images/jr-logo.png' %}" alt="Logo" height="80" />
+        </div>
 
-          <div class="search-and-social">
-            <form class="search-form" role="search">
-              <input
-                class="form-control"
-                type="search"
-                placeholder="Buscar no site"
-                aria-label="Search" />
-              <button class="btn btn-light" type="submit">
-                <i class="bi bi-search"></i>
-              </button>
-            </form>
-          </div>
+        <!-- TÍTULO CENTRALIZADO -->
+        <div class="flex-grow-1 text-center">
+          <h1 class="school-title mb-0">
+            SECRETARIA ESTADUAL DE EDUCAÇÃO DE SÃO PAULO<br />
+            <span>Escola Estadual Júlio Ribeiro</span>
+          </h1>
+        </div>
+
+        <!-- BUSCA À DIREITA -->
+        <div class="search-and-social">
+          <form class="search-form" role="search" method="get">
+            <input
+              class="form-control"
+              type="search"
+              name="q"
+              placeholder="Buscar" />
+            <button class="btn btn-light" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+            {% if query %}
+            <a href="{% url 'library:book_list' %}" class="btn btn-secondary"
+              >✖</a
+            >
+            {% endif %}
+          </form>
         </div>
       </div>
 
@@ -72,14 +79,15 @@
                 <a class="nav-link" href="#sobre">Sobre</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#avisos">Avisos</a>
+                <a class="nav-link" href="#conheca-grade">Grade</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#whats-happening">Timeline</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#professores">Professores</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#gremio">Grêmio</a>
-              </li>
+
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'library:book_list' %}"
                   >Biblioteca</a
@@ -110,49 +118,188 @@
       <div class="container text-center banner-content">
         <h1>ENSINO TÉCNICO E MÉDIO GRATUITO</h1>
         <h2 id="sub-title">COM QUALIDADE ESCOLA JÚLIO RIBEIRO</h2>
+      </div>
+    </section>
 
-        <div class="banner-buttons mt-4">
-          <a href="{% url 'library:desenvolvimento' %}" class="btn btn-danger"
-            >Curso de Desenvolvimento de Sistemas</a
-          >
-          <a href="{% url 'library:logistica' %}" class="btn btn-primary"
-            >Curso de Logística</a
-          >
-          <a href="{% url 'library:vendas' %}" class="btn btn-warning"
-            >Curso de Vendas</a
-          >
-          <a href="{% url 'library:formacao_geral' %}" class="btn btn-success"
-            >Formação Geral Básica</a
-          >
+    <section id="conheca-grade" class="four-pillars-section py-5">
+      <div class="container">
+        <h2 class="text-center fw-bold text-uppercase mb-4 fw-bold">
+          CONHEÇA NOSSA GRADE
+        </h2>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/des-sistemas.png' %}"
+                alt="Academics"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Desenvolvimento de Sistemas</h4>
+                  <a
+                    href="{% url 'library:desenvolvimento' %}"
+                    class="btn btn-outline-light"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+              <div class="label-bottom">Técnico Desnvolvimento de Sistemas</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/log-curso.png' %}"
+                alt="Sports"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Logística</h4>
+                  <a
+                    href="{% url 'library:logistica' %}"
+                    class="btn btn-outline-light"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+              <div class="label-bottom">Técnico em Logística</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/vendas-curso.png' %}"
+                alt="Atividades Extracurriculares"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Vendas</h4>
+                  <a
+                    href="{% url 'library:vendas' %}"
+                    class="btn btn-outline-light"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+              <div class="label-bottom">Técnico em Vendas</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/geral-basica-curso.png' %}"
+                alt="Artes"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Geral Básica</h4>
+                  <a
+                    href="{% url 'library:formacao_geral' %}"
+                    class="btn btn-outline-light"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+              <div class="label-bottom">Geral Básica</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="avisos" class="py-5">
+    <section id="whats-happening" class="py-5 bg-light">
       <div class="container">
-        <h2 class="text-center mb-4">Avisos e Comunicados</h2>
+        <h2 class="text-center mb-4 text-uppercase fw-bold">Timeline</h2>
+        <div class="d-flex justify-content-center mb-4">
+          <ul class="nav nav-tabs w-100" id="happeningTabs" role="tablist">
+            <li class="nav-item flex-fill text-center" role="presentation">
+              <button
+                class="nav-link active w-100"
+                id="news-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#news"
+                type="button"
+                role="tab">
+                NEWS
+              </button>
+            </li>
+            <li class="nav-item flex-fill text-center" role="presentation">
+              <button
+                class="nav-link w-100"
+                id="calendar-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#calendar"
+                type="button"
+                role="tab">
+                CALENDARIO
+              </button>
+            </li>
+            <li class="nav-item flex-fill text-center" role="presentation">
+              <button
+                class="nav-link w-100"
+                id="upcoming-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#upcoming"
+                type="button"
+                role="tab">
+                UPCOMING EVENTS
+              </button>
+            </li>
+          </ul>
+        </div>
 
-        <div class="avisos-container">
-          <button class="scroll-button scroll-left" onclick="scrollLeftAviso()">
-            ◀
-          </button>
-
-          <div class="avisos-slider" id="avisos-slider">
-            {% for aviso in avisos %}
-            <div class="aviso-card">
-              <img src="{{ aviso.imagem.url }}" alt="{{ aviso.titulo }}" />
-              <div class="aviso-info">
-                <h5>{{ aviso.titulo }}</h5>
-                <p>{{ aviso.resumo|truncatechars:120 }}</p>
-                <button
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#avisoModal{{ aviso.id }}">
-                  Ler Mais
-                </button>
+        <div class="tab-content" id="happeningTabsContent">
+          <!-- NEWS TAB -->
+          <div class="tab-pane fade show active" id="news" role="tabpanel">
+            <div
+              id="avisosCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for grupo in avisos %}
+                <div
+                  class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div class="d-flex justify-content-center">
+                    {% for aviso in grupo %}
+                    <div
+                      class="aviso-card small-card d-flex flex-column align-items-center text-center mx-2">
+                      <img
+                        src="{{ aviso.imagem.url }}"
+                        alt="{{ aviso.titulo }}"
+                        class="img-fluid rounded mb-2" />
+                      <div class="aviso-info">
+                        <h5>{{ aviso.titulo }}</h5>
+                        <p>{{ aviso.resumo|truncatechars:120 }}</p>
+                        <button
+                          class="btn btn-danger"
+                          data-bs-toggle="modal"
+                          data-bs-target="#avisoModal{{ aviso.id }}">
+                          Ler Mais
+                        </button>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endfor %}
               </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#avisosCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#avisosCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
             </div>
 
+            {% for grupo in avisos %} {% for aviso in grupo %}
             <!-- Modal -->
             <div
               class="modal fade"
@@ -178,14 +325,164 @@
                 </div>
               </div>
             </div>
-            {% endfor %}
+            {% endfor %} {% endfor %}
           </div>
 
-          <button
-            class="scroll-button scroll-right"
-            onclick="scrollRightAviso()">
-            ▶
-          </button>
+          <!-- CALENDAR TAB -->
+          <div class="tab-pane fade" id="calendar" role="tabpanel">
+            <div
+              id="calendarCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for grupo in eventos_calendario %}
+                <div
+                  class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div
+                    class="d-flex justify-content-center align-items-stretch">
+                    {% for evento in grupo %}
+                    <div class="calendar-card mx-2">
+                      <div
+                        class="calendar-date bg-danger text-white text-center py-4">
+                        <div class="small">
+                          {{ evento.dia_semana }} - {{ evento.mes }}
+                        </div>
+                        <div class="display-6 fw-bold">{{ evento.dia }}</div>
+                      </div>
+                      <div class="calendar-info bg-white p-3 text-center">
+                        <h6>{{ evento.titulo }}</h6>
+                        <div class="calendar-line mt-1 mx-auto"></div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#calendarCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#calendarCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- UPCOMING EVENTS TAB -->
+          <div class="tab-pane fade" id="upcoming" role="tabpanel">
+            <div
+              id="upcomingCarousel"
+              class="carousel slide"
+              data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for evento in eventos_upcoming %}
+                <div
+                  class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div
+                    class="aviso-card d-flex flex-column align-items-center text-center">
+                    <div class="aviso-info">
+                      <h5>{{ evento.titulo }}</h5>
+                      <p><strong>{{ evento.data }}</strong></p>
+                      <p>{{ evento.descricao|truncatechars:100 }}</p>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <button
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#upcomingCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+              </button>
+              <button
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#upcomingCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="four-pillars-section py-5">
+      <div class="container">
+        <h2 class="text-center fw-bold text-uppercase mb-4 text-danger">
+          Nossos Pilares
+        </h2>
+        <div class="row g-3">
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/academics.png' %}"
+                alt="Academics"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Academics</h4>
+                  <a href="#" class="btn btn-outline-light">Saiba mais</a>
+                </div>
+              </div>
+              <div class="label-bottom">Academics</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/sports.png' %}"
+                alt="Sports"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Esportes</h4>
+                  <a href="#" class="btn btn-outline-light">Saiba mais</a>
+                </div>
+              </div>
+              <div class="label-bottom">Esportes</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/extracurricular.png' %}"
+                alt="Atividades Extracurriculares"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Atividades</h4>
+                  <a href="#" class="btn btn-outline-light">Saiba mais</a>
+                </div>
+              </div>
+              <div class="label-bottom">Atividades Extracurriculares</div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="pillar-card">
+              <img
+                src="{% static 'images/artes.png' %}"
+                alt="Artes"
+                class="img-fluid" />
+              <div class="overlay">
+                <div class="overlay-content">
+                  <h4>Artes</h4>
+                  <a href="#" class="btn btn-outline-light">Saiba mais</a>
+                </div>
+              </div>
+              <div class="label-bottom">Artes</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -275,23 +572,6 @@
               class="img-fluid rounded"
               alt="Foto da Escola" />
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="gremio" class="py-5">
-      <div class="container">
-        <h2 class="text-center mb-4">Grêmio Estudantil</h2>
-        <p class="text-center">
-          O Grêmio Estudantil da Escola Estadual Júlio Ribeiro promove
-          integração, eventos, debates e representa os interesses dos alunos.
-        </p>
-        <div class="text-center">
-          <img
-            src="{% static 'images/gremio.jpg' %}"
-            class="img-fluid rounded"
-            style="max-width: 600px"
-            alt="Grêmio Estudantil" />
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@
 from .services import fetch_book_info, save_book_cover
 from .models import Book, Publisher, Author
 from django.contrib import admin
-from .models import User, Book, Borrow, CategoryBook, Author, Publisher, Reserve, Aviso
+from .models import User, Book, Borrow, CategoryBook, Author, Publisher, Reserve, Aviso, EventoCalendario
 from django.urls import path
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -85,6 +85,12 @@ class BookAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Book, BookAdmin)
+
+
+@admin.register(EventoCalendario)
+class EventoCalendarioAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'data')
+    ordering = ('data',)
 
 
 @admin.register(Aviso)

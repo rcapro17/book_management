@@ -1,5 +1,8 @@
 # library/views.py
 
+from uuid import uuid4
+import uuid
+from .models import Book, Author, Publisher, CategoryBook
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,7 +10,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.utils import timezone
-from .models import Book, Author, Publisher, Borrow, Reserve, CategoryBook, Aviso
+from .models import Book, Author, Publisher, Borrow, Reserve, CategoryBook, Aviso, EventoCalendario
+
 from .forms import BookForm, AuthorForm, CategoryForm, PublisherForm, BorrowForm, ReserveForm, CustomUserCreationForm
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
@@ -20,16 +24,35 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
+from PIL import Image, ImageDraw, ImageFont
+import io
+from django.core.files.base import ContentFile
 
 
 def index(request):
     return render(request, 'library/home.html')
 
 
+def agrupar_em_grupos(lista, tamanho):
+    return [lista[i:i + tamanho] for i in range(0, len(lista), tamanho)]
+
+
+avisos_queryset = Aviso.objects.all().order_by('-id')
+avisos = agrupar_em_grupos(list(avisos_queryset), 3)
+
+
 def home(request):
-    avisos = Aviso.objects.all().order_by(
-        '-data_publicacao')  # Ordenar por mais recentes
-    return render(request, 'library/home.html', {'avisos': avisos})
+    avisos_queryset = Aviso.objects.all().order_by('-id')
+    avisos = agrupar_em_grupos(list(avisos_queryset), 3)
+
+    eventos_queryset = EventoCalendario.objects.order_by('data')
+    eventos_calendario = agrupar_em_grupos(list(eventos_queryset), 3)
+
+    return render(request, 'library/home.html', {
+        'avisos': avisos,
+        'eventos_calendario': eventos_calendario,
+        'eventos_upcoming': [],  # pode popular depois
+    })
 
 
 def book_list(request):
@@ -415,10 +438,34 @@ def publisher_delete(request, pk):
     return render(request, 'library/publisher_confirm_delete.html', {'publisher': publisher})
 
 
+logger = logging.getLogger(__name__)
+
+
+def clean_isbn(isbn):
+    return isbn.replace('-', '').replace(' ', '')
+
+
+def convert_isbn_10_to_13(isbn10):
+    prefix = '978' + isbn10[:-1]
+    total = sum((int(num) * (1 if i % 2 == 0 else 3))
+                for i, num in enumerate(prefix))
+    check_digit = (10 - (total % 10)) % 10
+    return prefix + str(check_digit)
+
+
+def fetch_book_by_isbn(isbn_code):
+    url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn_code}"
+    return requests.get(url)
+
+
+def fetch_book_by_title(title):
+    url = f"https://www.googleapis.com/books/v1/volumes?q=intitle:{title}"
+    return requests.get(url)
+
+
 @csrf_exempt
 def isbn_lookup_view(request):
     if request.method == 'GET':
-        # 👉 When the user opens the page, render the HTML template
         return render(request, 'library/isbn_lookup.html')
 
     elif request.method == 'POST':
@@ -426,16 +473,26 @@ def isbn_lookup_view(request):
             if not request.body:
                 return JsonResponse({'error': 'Empty request body'}, status=400)
 
-            print("Request Body:", request.body.decode('utf-8'))
-
             data = json.loads(request.body.decode('utf-8'))
-            isbn = data.get('isbn')
+            raw_isbn = data.get('isbn', '').strip()
+            title_query = data.get('title', '').strip()
 
-            if not isbn:
-                return JsonResponse({'error': 'No ISBN provided'}, status=400)
+            if not raw_isbn and not title_query:
+                return JsonResponse({'error': 'No ISBN or title provided'}, status=400)
 
-            url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}"
-            response = requests.get(url)
+            isbn = None
+
+            if raw_isbn:
+                isbn = clean_isbn(raw_isbn)
+                response = fetch_book_by_isbn(isbn)
+
+                if response.status_code == 200 and 'items' not in response.json() and len(isbn) == 10:
+                    isbn13 = convert_isbn_10_to_13(isbn)
+                    response = fetch_book_by_isbn(isbn13)
+                    isbn = isbn13
+            else:
+                response = fetch_book_by_title(title_query)
+                isbn = 'N/A'
 
             if response.status_code != 200:
                 return JsonResponse({'error': 'Failed to fetch book data from API'}, status=500)
@@ -445,82 +502,157 @@ def isbn_lookup_view(request):
             if 'items' not in book_data:
                 return JsonResponse({'error': 'Book not found'}, status=404)
 
-            book_info = book_data['items'][0]['volumeInfo']
+            books = []
+            for item in book_data['items'][:5]:
+                info = item['volumeInfo']
+                title = info.get('title', 'No title')
+                authors = ', '.join(info.get('authors', []))
+                category = ', '.join(
+                    info.get('categories', ['No category available']))
+                publisher = info.get('publisher', 'Unknown Publisher')
+                description = info.get(
+                    'description', 'No description available')
+                image_url = info.get('imageLinks', {}).get('thumbnail')
 
-            title = book_info.get('title', 'No title')
-            author = ', '.join(book_info.get('authors', []))
-            description = book_info.get(
-                'description', 'No description available')
-            categories = ', '.join(book_info.get(
-                'categories', ['No category available']))
-            publisher = book_info.get('publisher', 'Unknown Publisher')
-            cover = book_info.get('imageLinks', {}).get(
-                'thumbnail',
-                'https://via.placeholder.com/150x220.png?text=No+Cover'
-            )
+                if not image_url:
+                    image_file = generate_default_cover(title)
+                    path = default_storage.save(
+                        f'temp_covers/{image_file.name}', image_file)
+                    image_url = default_storage.url(path)
 
-            return JsonResponse({
-                'title': title,
-                'author': author,
-                'isbn': isbn,
-                'category': categories,
-                'publisher': publisher,
-                'description': description,
-                'cover': cover,
-            })
+                books.append({
+                    'title': title,
+                    'author': authors,
+                    'isbn': isbn,
+                    'category': category,
+                    'publisher': publisher,
+                    'description': description,
+                    'cover': image_url,
+                })
+
+            return JsonResponse({'multiple_books': books})
 
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON in request body'}, status=400)
         except Exception as e:
             return JsonResponse({'error': f'Error occurred: {str(e)}'}, status=500)
 
-    else:
-        # If the method is not GET or POST
-        return JsonResponse({'error': 'Invalid request method'}, status=405)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+def generate_default_cover(title):
+    width, height = 300, 450
+    background_color = (50, 50, 50)  # Dark gray
+    text_color = (255, 255, 255)     # White
+
+    img = Image.new('RGB', (width, height), color=background_color)
+    draw = ImageDraw.Draw(img)
+
+    try:
+        font = ImageFont.truetype("arial.ttf", 48)
+    except IOError:
+        font = ImageFont.load_default()
+
+    text = title[:35] + '...' if len(title) > 35 else title
+    bbox = draw.textbbox((0, 0), text, font=font)
+    text_width = bbox[2] - bbox[0]
+    text_height = bbox[3] - bbox[1]
+    x = (width - text_width) / 2
+    y = (height - text_height) / 2
+
+    draw.text((x, y), text, font=font, fill=text_color)
+
+    buffer = io.BytesIO()
+    img.save(buffer, format='PNG')
+    buffer.seek(0)
+
+    filename = f"{title[:10].replace(' ', '_')}_default_{uuid.uuid4().hex[:6]}.png"
+    return ContentFile(buffer.getvalue(), name=filename)
 
 
 @csrf_exempt
 def register_book_view(request):
     if request.method == "POST":
-        title = request.POST.get("title")
-        author_name = request.POST.get("author")  # author name from form
-        isbn = request.POST.get("isbn")
-        category_name = request.POST.get("category")  # category name from form
-        publisher_name = request.POST.get(
-            "publisher")  # publisher name from form
-        description = request.POST.get("description")
-        copies = request.POST.get("copies")
+        try:
+            logger.info("POST: %s", request.POST)
+            logger.info("FILES: %s", request.FILES)
 
-        # Handle file upload (if present)
-        cover_file = request.FILES.get("cover")
-        cover_url = request.POST.get("cover_url")
+            title = request.POST.get("title")
+            author_name = request.POST.get("author")
+            raw_isbn = request.POST.get("isbn", "").strip()
+            category_name = request.POST.get("category")
+            publisher_name = request.POST.get("publisher")
+            description = request.POST.get("description")
+            copies = request.POST.get("copies")
+            cover_file = request.FILES.get("cover")
 
-        # Get or create the related models (CategoryBook, Author, Publisher)
-        category, created = CategoryBook.objects.get_or_create(
-            name=category_name)
-        author, created = Author.objects.get_or_create(name=author_name)
-        publisher, created = Publisher.objects.get_or_create(
-            name=publisher_name)
+            cover_urls = request.POST.getlist("cover_url")
+            cover_url = cover_urls[-1] if cover_urls else None
 
-        # Create the book
-        book = Book(
-            title=title,
-            author=author,
-            isbn=isbn,
-            category=category,
-            publisher=publisher,
-            description=description,
-            copies=copies
-        )
+            if not title:
+                return JsonResponse({"error": "Title is required."}, status=400)
 
-        # Set cover field based on availability of file or URL
-        if cover_file:
-            book.photo = cover_file
-        elif cover_url:
-            book.photo_url = cover_url
+            # Se ISBN for vazio ou "N/A", gera um identificador alternativo único
+            if not raw_isbn or raw_isbn.upper() == "N/A":
+                isbn = f"fake-isbn-{uuid4().hex[:8]}"
+            else:
+                isbn = raw_isbn
 
-        book.save()
+            # Evita duplicatas (exceto para fake-isbn, que são únicos)
+            if Book.objects.filter(isbn=isbn).exists():
+                return JsonResponse({"error": "A book with this ISBN already exists."}, status=400)
 
-        return JsonResponse({"message": "Book registered successfully!"})
+            try:
+                copies = int(copies)
+            except (ValueError, TypeError):
+                copies = 1
 
-    return JsonResponse({"error": "Invalid request."})
+            category, _ = CategoryBook.objects.get_or_create(
+                name=category_name or "General")
+            author, _ = Author.objects.get_or_create(
+                name=author_name or "Unknown")
+            publisher, _ = Publisher.objects.get_or_create(
+                name=publisher_name or "Unknown")
+
+            book = Book(
+                title=title,
+                author=author,
+                isbn=isbn,
+                category=category,
+                publisher=publisher,
+                description=description,
+                copies=copies,
+            )
+
+            if cover_file:
+                book.photo = cover_file
+            elif cover_url:
+                book.photo_url = cover_url
+            else:
+                book.photo = generate_default_cover(title)
+
+            book.save()
+            return JsonResponse({"message": "Book registered successfully!"})
+
+        except Exception as e:
+            logger.exception("Book registration failed")
+            return JsonResponse({"error": f"Server error: {str(e)}"}, status=500)
+
+    return JsonResponse({"error": "Invalid request method."}, status=400)
+
+
+def whats_happening_view(request):
+    avisos = Aviso.objects.all().order_by('-id')  # se você já usa
+    eventos = EventoCalendario.objects.order_by('data')
+
+    # Agrupa os eventos em grupos de 3
+    def agrupar_em_grupos(lista, tamanho):
+        return [lista[i:i+tamanho] for i in range(0, len(lista), tamanho)]
+
+    eventos_calendario = agrupar_em_grupos(list(eventos), 3)
+
+    return render(request, 'library/whats_happening.html', {
+        'avisos': avisos,
+        'eventos_calendario': eventos_calendario,
+        'eventos_upcoming': [],  # substitua depois se necessário
+    })
