@@ -52,7 +52,7 @@ def home(request):
         'avisos': avisos,
         'eventos_calendario': eventos_calendario,
         'eventos_upcoming': [],  # pode popular depois
-    })
+    }) 
 
 
 def book_list(request):

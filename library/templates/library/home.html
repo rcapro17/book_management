@@ -267,6 +267,7 @@
                     {% for aviso in grupo %}
                     <div
                       class="aviso-card small-card d-flex flex-column align-items-center text-center mx-2">
+                      <h5>{{ aviso.data_publicacao|date:"d - F - Y" }}</h5>
                       <img
                         src="{{ aviso.imagem.url }}"
                         alt="{{ aviso.titulo }}"
@@ -275,7 +276,7 @@
                         <h5>{{ aviso.titulo }}</h5>
                         <p>{{ aviso.resumo|truncatechars:120 }}</p>
                         <button
-                          class="btn btn-danger"
+                          class="btn btn-outline-info"
                           data-bs-toggle="modal"
                           data-bs-target="#avisoModal{{ aviso.id }}">
                           Ler Mais
@@ -421,7 +422,7 @@
       </div>
     </section>
 
-    <section class="four-pillars-section py-5">
+    <section id="pilares" class="four-pillars-section py-5">
       <div class="container">
         <h2 class="text-center fw-bold text-uppercase mb-4 text-danger">
           Nossos Pilares
