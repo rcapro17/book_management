@@ -14,10 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # === Segurança / Ambiente ===
 
 # Usa SECRET_KEY do ambiente em produção, mas mantém a antiga como fallback para dev
-SECRET_KEY = os.environ.get(
-    "DJANGO_SECRET_KEY",
-    "django-insecure-%e5ix3b8+incber@^&_7m)p8jxtvc_w$b5px#x1k@@-ji8p+)r"
-)
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+
 
 # DEBUG: em produção deve ser False
 DEBUG = os.environ.get("DEBUG", "True") == "True"
